@@ -8,6 +8,7 @@
 #include "PhysicsComponent.hpp"
 #include "SpriteComponent.hpp"
 #include "EventComponent.hpp"
+#include "ControlSystem.hpp"
 
 #include <cstdio> // TEMP
 
