@@ -28,6 +28,7 @@ Window::Window(const Window::Settings &settings) :
         CollisionVolume(CollisionVolume::BOX, -32.0f, -16.0f, 32.0f, 16.0f)));
     _ecs.addComponent(_playerId, SpriteComponent(_blockTexture, 3, 64, 32));
     _ecs.getComponent<SpriteComponent>(_playerId)->sprite.setOrigin(32, 16);
+    _ecs.addComponent(_playerId, ControlComponent(10.f));
 
     /* Ball */
     _ecs.addComponent(_ballId, PhysicsComponent(
@@ -35,9 +36,12 @@ Window::Window(const Window::Settings &settings) :
         CollisionVolume(CollisionVolume::CIRCLE, 16.0f)));
     _ecs.addComponent(_ballId, SpriteComponent(_ballTexture, 0, 32, 32));
     _ecs.getComponent<SpriteComponent>(_ballId)->sprite.setOrigin(16, 16);
-
     _ecs.addComponent(_ballId, EventComponent());
-    _ecs.getComponent<EventComponent>(_ballId)->addHandler<EventHandler_Ball_CollisionEvent>();
+    _ecs.getComponent<EventComponent>(_ballId)->addHandlers<
+        EventHandler_Ball_CollisionEvent,
+        EventHandler_Ball_LaunchEvent
+    >();
+
 
     /* Walls */
     _ecs.addComponent(2, PhysicsComponent(
@@ -97,6 +101,9 @@ void Window::handleEvents(sf::Event &event)
             switch (event.key.code) {
                 case sf::Keyboard::Escape:
                     _window.close();
+                    break;
+                case sf::Keyboard::Space:
+                    _eventSystem.broadcastEvent(LaunchEvent());
                     break;
             }
             break;
