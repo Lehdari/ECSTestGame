@@ -14,7 +14,8 @@ Window::Window(const Window::Settings &settings) :
     _ballId             (1),
     _spriteRenderer     (_window),
     _eventSystem        (_ecs),
-    _collisionSystem    (_ecs, _eventSystem)
+    _collisionSystem    (_ecs, _eventSystem),
+    _controlSystem      (*this)
 {
     _window.setFramerateLimit(_settings.framerateLimit);
 
@@ -110,6 +111,7 @@ void Window::runSystems(void)
     _ecs.runSystem(_physicsSystem);
     _ecs.runSystem(_spriteRenderer);
     _ecs.runSystem(_collisionSystem);
+    _ecs.runSystem(_controlSystem);
     _ecs.runSystem(_eventSystem);
 
     _eventSystem.clear();
