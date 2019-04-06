@@ -31,3 +31,14 @@ void EventHandler_Ball_CollisionEvent::handleEvent(
     auto* phys = ecs.getComponent<PhysicsComponent>(eId);
     phys->vel = 2.0f*dot(event.normal, -phys->vel)*event.normal+phys->vel;
 }
+
+void EventHandler_Ball_LaunchEvent::handleEvent(
+    Ecs& ecs, const EntityId& eId, const LaunchEvent& event)
+{
+    ecs.removeComponent<ControlComponent>(eId);
+    auto& vel = ecs.getComponent<PhysicsComponent>(eId)->vel;
+
+    vel.x = 1.f;
+    vel.y = -10.f;
+}
+
