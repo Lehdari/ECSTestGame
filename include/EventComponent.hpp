@@ -23,6 +23,9 @@ public:
     template <typename T_Handler>
     void addHandler();
 
+    template <typename... T_Handlers>
+    void addHandlers();
+
 private:
     std::unordered_map<int64_t, void(*)(Ecs& ecs, const EntityId&, void*)> _handlers;
 };
@@ -35,5 +38,10 @@ void EventComponent::addHandler()
     _handlers[etId] = &EventHandler<T_Handler, typename T_Handler::EventType>::handleEvents;
 }
 
+template <typename... T_Handlers>
+void EventComponent::addHandlers()
+{
+    (addHandler<T_Handlers>(), ...);
+}
 
 #endif //ECSTESTGAME_EVENTCOMPONENT_HPP
