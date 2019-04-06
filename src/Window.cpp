@@ -119,3 +119,13 @@ void Window::render(void)
 {
     //  Render OpenGL stuff here
 }
+
+#include <iostream>
+
+bool Window::isKeyPressed(const GameButton& button) const {
+    if (_keybinds.find(button) == _keybinds.end()) {
+        std::cout << "Button not bound" << std::endl;
+        return false;
+    }
+    return sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(_keybinds.at(button)));
+}

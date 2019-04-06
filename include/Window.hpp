@@ -34,7 +34,21 @@ public:
         {}
     };
 
+    enum GameButton {
+        MoveLeft,
+        MoveRight,
+        LaunchBall,
+    };
+
+    std::unordered_map<GameButton, int, std::hash<int>> _keybinds = {
+        {MoveLeft, sf::Keyboard::Left},
+        {MoveRight, sf::Keyboard::Right},
+        {LaunchBall, sf::Keyboard::Space},
+    };
+
     Window(const Settings& settings = Settings());
+
+    bool isKeyPressed(const GameButton&) const;
 
     void loop(void);
 
