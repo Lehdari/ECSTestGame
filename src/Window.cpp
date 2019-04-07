@@ -22,9 +22,11 @@ Window::Window(const Window::Settings &settings) :
     _blockTexture.loadFromFile("../res/gfx/blocks.png");
     _ballTexture.loadFromFile("../res/gfx/ball.png");
 
+    auto playerpos = vm::vec2f(450,550);
+
     /* Player */
     _ecs.addComponent(_playerId, PhysicsComponent(
-        vm::vec2f(450, 550), vm::vec2f(0.5, 0.0f),
+        playerpos, vm::vec2f(0.f, 0.f),
         CollisionVolume(CollisionVolume::BOX, -32.0f, -16.0f, 32.0f, 16.0f)));
     _ecs.addComponent(_playerId, SpriteComponent(_blockTexture, 3, 64, 32));
     _ecs.getComponent<SpriteComponent>(_playerId)->sprite.setOrigin(32, 16);
@@ -32,11 +34,12 @@ Window::Window(const Window::Settings &settings) :
 
     /* Ball */
     _ecs.addComponent(_ballId, PhysicsComponent(
-        vm::vec2f(400, 400), vm::vec2f(-0.5f, 2.0f),
+        playerpos - vm::vec2f(0.f, 20.f), vm::vec2f(0,0),
         CollisionVolume(CollisionVolume::CIRCLE, 16.0f)));
     _ecs.addComponent(_ballId, SpriteComponent(_ballTexture, 0, 32, 32));
     _ecs.getComponent<SpriteComponent>(_ballId)->sprite.setOrigin(16, 16);
     _ecs.addComponent(_ballId, EventComponent());
+    _ecs.addComponent(_ballId, ControlComponent(10.f));
     _ecs.getComponent<EventComponent>(_ballId)->addHandlers<
         EventHandler_Ball_CollisionEvent,
         EventHandler_Ball_LaunchEvent
